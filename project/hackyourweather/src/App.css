@@ -1,0 +1,36 @@
+.App {
+  text-align: left;
+  font-size: medium;
+  font-weight: 500;
+  
+}
+
+.City-weather {
+
+  border: 2px solid black;
+  margin: 50px auto;
+  width: 50vh;
+  padding-left: 35px;
+}
+
+.Weather-desc p {
+
+  margin-top: 0px ;
+  margin-bottom: 0px;
+}
+
+.max-min-temp {
+
+  margin-top: 25px;
+}
+
+.max-min-temp p {
+
+  margin-top: 5px ;
+  margin-bottom: 5px;
+}
+
+.max-min-temp span {
+
+  margin-left: 20px;
+}
