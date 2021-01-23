@@ -1,7 +1,7 @@
-import CityWeatherData from "../city-weather.json";
+import cityWeatherData from "../city-weather.json";
 
 function WeatherData() {
-    return CityWeatherData.map(({ name, sys, main, coord, weather }, index) => {
+    return cityWeatherData.map(({ name, sys, main, coord, weather }, index) => {
         return (
             <div className='City-weather' key={index}>
                 <h2>

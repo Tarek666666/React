@@ -4,12 +4,12 @@ export function HobbiesList(props) {
         <div className='HobbiesList'>
             <h1>{props.title}</h1>
             {props.hobbies.map((hobby, index) => {
-                return <Hobbies hobby={hobby} key={index}></Hobbies>;
+                return <Hobby hobby={hobby} key={index}></Hobby>;
             })}
         </div>
     );
 }
-export function Hobbies(props) {
+export function Hobby(props) {
     return (
         <div className='Hobbies'>
             <p>{props.hobby}</p>
