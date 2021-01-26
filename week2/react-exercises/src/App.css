@@ -1,0 +1,38 @@
+.App {
+    text-align: center;
+    
+    margin: auto;
+    margin-top: 20vh;
+    border: 2px solid black;
+    padding: 5px;
+    width: 50vh;
+}
+
+.friendsUl {
+    list-style: none;
+    font-size: 18px;
+}
+
+.friendsUl li {
+    text-align: center;
+    padding: 5px;
+}
+
+.friendsUl span {
+    margin-right: 10px;
+    text-align: left;
+    font-weight: bold;
+}
+
+.getFriendBtn {
+  background-color: rgb(101, 101, 233);
+  padding: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.dogPhoto {
+
+  width: 100%;
+  max-height: 250px;
+}
