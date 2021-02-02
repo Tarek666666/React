@@ -1,4 +1,4 @@
-import cityWeatherData from "../city-weather.json";
+
 
 export function WeatherData({ cityWeather }) {
     return (
