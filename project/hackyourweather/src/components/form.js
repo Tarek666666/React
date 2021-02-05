@@ -62,7 +62,7 @@ export default function From() {
                 setError(true);
             });
 
-            const removeCity = (id) => cityWeather.filter(city => city.id !== id)
+            
     };
 
     return (
