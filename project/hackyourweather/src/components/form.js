@@ -1,16 +1,23 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "../App.css";
 import { WeatherData } from "../components/weather";
+import { Search } from "./search";
 
 export default function From() {
     const [cityName, setCityName] = useState("");
-    const [cityWeather, setCityWeather] = useState([]);
+    const [citiesWeather, setCitiesWeather] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [hasError, setError] = useState(false);
     const [searchError, setSearchError] = useState(false);
+    const API_KEY = process.env.REACT_APP_OPENWEATHERMAP_API_KEY;
 
     const handleCityName = (e) => {
         setCityName(e.target.value);
+    };
+
+    const handleDelete = (id) => {
+        const filterdCities = citiesWeather.filter((city) => city.id !== id);
+        setCitiesWeather(filterdCities);
     };
 
     const handleSearch = (e) => {
@@ -27,7 +34,7 @@ export default function From() {
         setIsLoading(true);
 
         fetch(
-            `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=${process.env.REACT_APP_OPENWEATHERMAP_API_KEY}`
+            `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=${API_KEY}`
         )
             .then((response) => {
                 if (!response.ok) {
@@ -55,44 +62,40 @@ export default function From() {
                     lat: data.coord.lat,
                 };
 
-                setCityWeather([searchedCityObj, ...cityWeather]);
+                setCitiesWeather([searchedCityObj, ...citiesWeather]);
             })
             .catch((err) => {
                 setIsLoading(false);
                 setError(true);
             });
-
-            const removeCity = (id) => cityWeather.filter(city => city.id !== id)
     };
 
     return (
         <div>
             <form className='form' onSubmit={handleSearch}>
-                <input
-                    type='text'
-                    placeholder='Search City'
-                    className='searchBar'
-                    onChange={handleCityName}
-                    value={cityName}
-                />
-                <input type='submit' value='Search' className='submitBtn' />
+                <Search handleCityName={handleCityName} cityName={cityName} />
             </form>
             {hasError && !isLoading && !searchError && (
                 <>
                     <p className={"search-error"}>Please Enter a Valid City Name .</p>
-                    <WeatherData cityWeather={cityWeather} />
+                    <WeatherData citiesWeather={citiesWeather} handleDelete={handleDelete} />
                 </>
             )}
-            {searchError && <><p className={"search-error"}>You can't leave the search bar empty</p> <WeatherData cityWeather={cityWeather} /></>}
+            {searchError && (
+                <>
+                    <p className={"search-error"}>You can't leave the search bar empty</p>{" "}
+                    <WeatherData citiesWeather={citiesWeather} handleDelete={handleDelete} />
+                </>
+            )}
             {isLoading && !hasError && <p>Loading .....</p>}
-            {!cityWeather && !hasError && !isLoading && !searchError && (
+            {!citiesWeather && !hasError && !isLoading && !searchError && (
                 <p className={"search-bar-empty"}>
                     You Have not entered a City name to search for it!!
                 </p>
             )}
 
-            {cityWeather.length !== 0 && !isLoading && !hasError && !searchError && (
-                <WeatherData cityWeather={cityWeather} />
+            {citiesWeather.length !== 0 && !isLoading && !hasError && !searchError && (
+                <WeatherData citiesWeather={citiesWeather} handleDelete={handleDelete} />
             )}
         </div>
     );

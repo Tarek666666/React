@@ -1,22 +1,14 @@
-import { useEffect, useState } from "react";
-
-export function WeatherData({ cityWeather }) {
-    const [citiesWeather, setCitiesWeather] = useState(cityWeather);
-
-    const handleDelete = (id) => {
-        const selectedId = id.target.id;
-
-        cityWeather.splice(selectedId, 1);
-
-        setCitiesWeather(cityWeather);
-    };
-
+export function WeatherData({ citiesWeather, handleDelete }) {
     return (
         <div className='Cities-Container'>
-            {cityWeather.map((city, index) => {
+            {citiesWeather.map((city, index) => {
                 return (
                     <div key={index + 1} id={index} className='City-weather'>
-                        <button id={index} className={"delete-btn"} onClick={handleDelete}>
+                        <button
+                            id={index}
+                            className={"delete-btn"}
+                            onClick={() => handleDelete(city.id)}
+                        >
                             X
                         </button>
                         <h2>
@@ -24,7 +16,6 @@ export function WeatherData({ cityWeather }) {
                         </h2>
 
                         <p>
-                            {" "}
                             <span>Weather:</span> {city.weather}
                         </p>
                         <p>
@@ -43,7 +34,7 @@ export function WeatherData({ cityWeather }) {
                             {city.minTemp}º
                         </p>
                         <p>
-                            <span>Location: </span> lat: {city.lat} , lon: {city.lon}{" "}
+                            <span>Location: </span> lat: {city.lat} , lon: {city.lon}
                         </p>
                     </div>
                 );
