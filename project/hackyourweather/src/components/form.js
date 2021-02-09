@@ -2,6 +2,8 @@ import { useState } from "react";
 import "../App.css";
 import { WeatherData } from "../components/weather";
 import { Search } from "./search";
+import { City } from "./singleCity";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 export default function From() {
     const [cityName, setCityName] = useState("");
@@ -18,6 +20,10 @@ export default function From() {
     const handleDelete = (id) => {
         const filterdCities = citiesWeather.filter((city) => city.id !== id);
         setCitiesWeather(filterdCities);
+    };
+
+    const handleCityDetails = (id) => {
+        const selectedCity = citiesWeather.filter((city) => city.id === id);
     };
 
     const handleSearch = (e) => {
@@ -42,6 +48,7 @@ export default function From() {
                     setError(true);
                     throw new Error("Something went wrong with fetching data");
                 }
+
                 return response.json();
             })
             .then((data) => {
@@ -68,37 +75,52 @@ export default function From() {
                 setIsLoading(false);
                 setError(true);
             });
-
-            
     };
 
     return (
-        <div>
-            <form className='form' onSubmit={handleSearch}>
-                <Search handleCityName={handleCityName} cityName={cityName} />
-            </form>
-            {hasError && !isLoading && !searchError && (
-                <>
-                    <p className={"search-error"}>Please Enter a Valid City Name .</p>
-                    <WeatherData citiesWeather={citiesWeather} handleDelete={handleDelete} />
-                </>
-            )}
-            {searchError && (
-                <>
-                    <p className={"search-error"}>You can't leave the search bar empty</p>{" "}
-                    <WeatherData citiesWeather={citiesWeather} handleDelete={handleDelete} />
-                </>
-            )}
-            {isLoading && !hasError && <p>Loading .....</p>}
-            {!citiesWeather && !hasError && !isLoading && !searchError && (
-                <p className={"search-bar-empty"}>
-                    You Have not entered a City name to search for it!!
-                </p>
-            )}
+        <Router>
+            <Route exact path='/'>
+                <form className='form' onSubmit={handleSearch}>
+                    <Search handleCityName={handleCityName} cityName={cityName} />
+                </form>
+                {hasError && !isLoading && !searchError && (
+                    <>
+                        <p className={"search-error"}>Please Enter a Valid City Name .</p>
+                        <WeatherData
+                            citiesWeather={citiesWeather}
+                            handleDelete={handleDelete}
+                            handleCityDetails={handleCityDetails}
+                        />
+                    </>
+                )}
+                {searchError && (
+                    <>
+                        <p className={"search-error"}>You can't leave the search bar empty</p>{" "}
+                        <WeatherData
+                            citiesWeather={citiesWeather}
+                            handleDelete={handleDelete}
+                            handleCityDetails={handleCityDetails}
+                        />
+                    </>
+                )}
+                {isLoading && !hasError && <p>Loading .....</p>}
+                {citiesWeather.length === 0 && !hasError && !isLoading && !searchError && (
+                    <p className={"search-bar-empty"}>
+                        You Have not entered a City name to search for it!!
+                    </p>
+                )}
 
-            {citiesWeather.length !== 0 && !isLoading && !hasError && !searchError && (
-                <WeatherData citiesWeather={citiesWeather} handleDelete={handleDelete} />
-            )}
-        </div>
+                {citiesWeather.length !== 0 && !isLoading && !hasError && !searchError && (
+                    <WeatherData
+                        citiesWeather={citiesWeather}
+                        handleDelete={handleDelete}
+                        handleCityDetails={handleCityDetails}
+                    />
+                )}
+            </Route>
+            <Route path='/:cityId'>
+                <City></City>
+            </Route>
+        </Router>
     );
 }

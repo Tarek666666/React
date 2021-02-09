@@ -1,4 +1,5 @@
-export function WeatherData({ citiesWeather, handleDelete }) {
+import { Link } from "react-router-dom";
+export function WeatherData({ citiesWeather, handleDelete, handleCityDetails }) {
     return (
         <div className='Cities-Container'>
             {citiesWeather.map((city, index) => {
@@ -11,6 +12,7 @@ export function WeatherData({ citiesWeather, handleDelete }) {
                         >
                             X
                         </button>
+
                         <h2>
                             {city.name}, {city.sys}
                         </h2>
@@ -33,6 +35,18 @@ export function WeatherData({ citiesWeather, handleDelete }) {
                             <span>Min_Temp: </span>
                             {city.minTemp}º
                         </p>
+
+                        <Link to={`${city.id}`}>
+                            {" "}
+                            <button
+                                id={index}
+                                className={"details-btn"}
+                                onClick={() => handleCityDetails(city.id)}
+                            >
+                                Details
+                            </button>
+                        </Link>
+
                         <p>
                             <span>Location: </span> lat: {city.lat} , lon: {city.lon}
                         </p>
